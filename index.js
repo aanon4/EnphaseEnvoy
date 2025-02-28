@@ -107,6 +107,25 @@ class Api {
         return production.map(p => p.serialNumber);
     }
 
+    async getInverterInventory() {
+        const inv = await this._fetch("inventory.json");
+        const devices = [];
+        inv.forEach(item => {
+            if (item.type === "PCU") {
+                item.devices.forEach(dev => {
+                    devices.push({
+                        partNumber: dev.part_num,
+                        serialNumber: dev.serial_num,
+                        producing: dev.producing,
+                        communicating: dev.communicating,
+                        phase: dev.phase
+                    });
+                });
+            }
+        });
+        return devices;
+    }
+
     async getMeterReadings() {
         return await this._fetch("ivp/meters/readings");
     }
