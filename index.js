@@ -103,11 +103,6 @@ class Api {
     }
 
     async getInverters() {
-        const production = await this._fetch("api/v1/production/inverters");
-        return production.map(p => p.serialNumber);
-    }
-
-    async getInverterInventory() {
         const inv = await this._fetch("inventory.json");
         const devices = [];
         inv.forEach(item => {
