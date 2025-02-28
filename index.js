@@ -139,7 +139,11 @@ class Api {
     }
 }
 
-module.exports = async function connect(username, password) {
+module.exports = async function connect(username, password, endpoint, serial) {
     const api = new Api(username, password);
-    return await api.login();
+    await api.login();
+    if (endpoint && serial) {
+        await api.setEndpoint(endpoint, serial);
+    }
+    return api;
 };
