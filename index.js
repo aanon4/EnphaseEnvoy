@@ -29,9 +29,21 @@ class Api {
     }
 
     async setEndpoint(endpoint, serial) {
-        this.endpoint = `https://${endpoint}/`;
         this.serial = serial;
         await this.getToken();
+        const res = await fetch(`http://${endpoint}/inventory.json`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.token}`
+            },
+            redirect: "manual"
+        });
+        if (res.ok) {
+            this.endpoint = `http://${endpoint}/`;
+        }
+        else {
+            this.endpoint = `https://${endpoint}/`;
+        }
     }
 
     async getToken() {
